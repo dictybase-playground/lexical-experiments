@@ -1,15 +1,8 @@
 import { defineConfig, devices } from "@playwright/test"
 
-try {
-  process.loadEnvFile(".env.development")
-} catch {
-  // eslint-disable-next-line no-console
-  console.warn("Could not load .env.development file")
-}
-
 // eslint-disable-next-line import/no-default-export
 export default defineConfig({
-  testDir: "./src/e2e",
+  testDir: "./e2e",
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -20,7 +13,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : 4,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: process.env.CI ? "github" : "list",
-  timeout: 60_000,
+  timeout: 5000,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   expect: {
     timeout: 30_000,
