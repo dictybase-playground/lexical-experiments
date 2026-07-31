@@ -13,7 +13,6 @@ import {
 import { $wrapNodes } from "@lexical/selection"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 import { useAtomValue } from "jotai"
-import { $createFlexLayoutNode } from "@dictybase/flex-layout-plugin"
 import { blockTypeAtom, BlockTypes } from "../context/atomConfigs"
 
 const formatParagraph = (
@@ -88,7 +87,7 @@ const useBlockFormat = (): [BlockTypes, (newBlockType: BlockTypes) => void] => {
   const setBlockType = useCallback(
     (newBlockType: BlockTypes) => {
       const blockFormatFunctions = {
-        "flex-layout": () => formatParagraph(blockType, editor),
+        paragraph: () => formatParagraph(blockType, editor),
         h1: () => formatHeading("h1", blockType, editor),
         h2: () => formatHeading("h2", blockType, editor),
         h3: () => formatHeading("h3", blockType, editor),
