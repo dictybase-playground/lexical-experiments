@@ -95,3 +95,16 @@ test("Pressing <Enter> in an empty numbered list listitem removes that list item
   await expect(editor.locator("li")).toHaveCount(0)
   await expect(editor.locator("p")).toHaveCount(1)
 })
+
+test("Pressing <Enter> in a quote block creates a new paragraph", async ({ page }) => {
+  const editor = page.getByRole("textbox")
+  await editor.click()
+  await page.getByText("Normal").click()
+  await page.getByRole("option", { name: "Quote" }).click()
+  
+  await expect(editor.locator("p")).toHaveCount(0)
+  await expect(editor.locator("blockquote")).toHaveCount(1)
+  await editor.press("Enter")
+  await expect(editor.locator("p")).toHaveCount(1)
+})
+
