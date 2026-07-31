@@ -28,3 +28,42 @@ test("Pressing <Enter> in a Heading creates a new paragraph", async ({ page }) =
   await editor.press("Enter")
   await expect(editor.locator("p")).toHaveCount(1)
 })
+
+test("Pressing <Enter> in a heading creates a new paragraph", async ({ page }) => {
+  const editor = page.getByRole("textbox")
+  await editor.click()
+  await page.getByText("Normal").click()
+  await page.getByRole("option", { name: "Heading 1"}).click()
+  
+  await expect(editor.locator("h1")).toHaveCount(1)
+  await editor.press("Enter")
+  await expect(editor.locator("p")).toHaveCount(1)
+})
+
+test("Pressing <Enter> in a non-empty listitem creates a listitem", async ({ page }) => {
+  const editor = page.getByRole("textbox")
+  await editor.click()
+  await page.getByText("Normal").click()
+  await page.getByRole("option", { name: "Bulleted List"}).click()
+  
+  await expect(editor.locator("p")).toHaveCount(0)
+  await expect(editor.locator("ul")).toHaveCount(1)
+  await expect(editor.locator("li")).toHaveCount(1)
+  await editor.pressSequentially("item 1")
+  await editor.press("Enter")
+  await expect(editor.locator("li")).toHaveCount(2)
+})
+
+test("Pressing <Enter> in an empty listitem removes that list item and creates a paragraph", async ({ page }) => {
+  const editor = page.getByRole("textbox")
+  await editor.click()
+  await page.getByText("Normal").click()
+  await page.getByRole("option", { name: "Bulleted List"}).click()
+  
+  await expect(editor.locator("p")).toHaveCount(0)
+  await expect(editor.locator("ul")).toHaveCount(1)
+  await expect(editor.locator("li")).toHaveCount(1)
+  await editor.press("Enter")
+  await expect(editor.locator("li")).toHaveCount(0)
+  await expect(editor.locator("p")).toHaveCount(1)
+})
