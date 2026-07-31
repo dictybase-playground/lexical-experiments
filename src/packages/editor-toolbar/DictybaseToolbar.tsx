@@ -37,9 +37,6 @@ const DictybaseToolbar = () => {
         <ColorPickerButton />
         <InsertLinkButton />
       </Stack>
-      <Stack direction="row">
-        <InsertLinkButton />
-      </Stack>
     </Toolbar>
   )
 }

@@ -57,7 +57,7 @@ const Editor = ({
         OgetOrElse(() => <></>),
       )}
       <Stack direction="row">
-        <Stack spacing={1} flexBasis="60%">
+        <Stack spacing={1}>
           {pipe(
             editable,
             Bmatch(
@@ -65,7 +65,7 @@ const Editor = ({
               () => <DictybaseToolbar />,
             ),
           )}
-          <div style={{ position: "relative" }}>
+          <div>
             <RichTextPlugin
               ErrorBoundary={LexicalErrorBoundary}
               contentEditable={

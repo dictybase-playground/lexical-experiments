@@ -1,5 +1,5 @@
 import { useCallback } from "react"
-import { $getSelection, $isRangeSelection, LexicalEditor } from "lexical"
+import { $getSelection, $isRangeSelection, LexicalEditor, $createParagraphNode } from "lexical"
 import {
   INSERT_ORDERED_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND,
@@ -20,12 +20,12 @@ const formatParagraph = (
   currentBlockType: BlockTypes,
   editor: LexicalEditor,
 ) => {
-  if (currentBlockType !== "flex-layout") {
+  if (currentBlockType !== "paragraph") {
     editor.update(() => {
       const selection = $getSelection()
 
       if ($isRangeSelection(selection)) {
-        $wrapNodes(selection, () => $createFlexLayoutNode())
+        $wrapNodes(selection, () => $createParagraphNode())
       }
     })
   }

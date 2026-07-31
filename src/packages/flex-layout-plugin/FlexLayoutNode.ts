@@ -39,6 +39,10 @@ class FlexLayoutNode extends ElementNode {
     return false
   }
 
+  $isShadowRoot() {
+    return true
+  }
+
   getParagraphNodeOrThrow() {
     const paragraphNode = this.getChildren().find((node) =>
       $isParagraphNode(node),
