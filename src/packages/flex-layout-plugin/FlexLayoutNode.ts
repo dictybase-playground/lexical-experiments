@@ -39,7 +39,7 @@ class FlexLayoutNode extends ElementNode {
     return false
   }
 
-  $isShadowRoot() {
+  override isShadowRoot() {
     return true
   }
 
