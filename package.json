@@ -13,7 +13,7 @@
     "test:watch": "vitest watch",
     "e2e": "BASE_URL=http://localhost:5173 playwright test",
     "coverage": "vitest run --coverage",
-    "lint": "oxlint src/"
+    "lint": "oxlint src/ e2e/"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
