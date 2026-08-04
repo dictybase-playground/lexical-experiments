@@ -10,6 +10,7 @@ import { defaultStateString, flexLayoutStateString } from "./initialStates"
 const editorTheme = {
   paragraph: "editor-paragraphy",
   "flexLayout": "editor-flex-layout",
+  image: "editor-image",
   text: {
     bold: "editor-text-bold",
     italic: "editor-text-italic",

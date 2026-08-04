@@ -35,10 +35,13 @@
   row-gap: 0;
 }
 
-.editor-flex-layout > * {
-  flex-basis: 100%;
+.editor-flex-layout > p {
+  flex: 1 1 0%;
 }
 
+.editor-flex-layout > .editor-image {
+  flex-shrink: 0 0 auto;
+}
 .editor-paragraph:last-child {
   margin-bottom: 0;
 }
