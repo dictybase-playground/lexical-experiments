@@ -2,7 +2,7 @@ import { InitialConfigType } from "@lexical/react/LexicalComposer"
 import { ListItemNode, ListNode } from "@lexical/list"
 import { HeadingNode, QuoteNode } from "@lexical/rich-text"
 import { LinkNode } from "@lexical/link"
-import { ImageNode } from "@dictybase/image-plugin"
+import { BasicImageNode } from "@dictybase/image-plugin"
 import { FlexLayoutNode } from "@dictybase/flex-layout-plugin"
 import { DownloadLinkNode } from "@dictybase/editor-toolbar"
 import { defaultStateString, flexLayoutStateString } from "./initialStates"
@@ -32,7 +32,7 @@ const flexLayoutEditorConfig: InitialConfigType = {
     DownloadLinkNode,
     ListItemNode,
     ListNode,
-    ImageNode,
+    BasicImageNode,
     FlexLayoutNode,
   ],
   editorState: flexLayoutStateString,
@@ -49,7 +49,7 @@ const defaultEditorConfig: InitialConfigType = {
     DownloadLinkNode,
     ListItemNode,
     ListNode,
-    ImageNode,
+    BasicImageNode,
   ],
   editorState: defaultStateString,
   onError

@@ -9,6 +9,7 @@ import { FormatItalicButton } from "./components/FormatItalicButton"
 import { FormatUnderlineButton } from "./components/FormatUnderlineButton"
 import { ColorPickerButton } from "./components/ColorPickerButton"
 import { InsertLinkButton } from "./components/InsertLinkButton"
+import { InsertImageButton } from "./components/InsertImageButton"
 import { useCleanup } from "./hooks/useCleanup"
 
 const DictybaseToolbar = () => {
@@ -36,6 +37,7 @@ const DictybaseToolbar = () => {
         <FormatUnderlineButton />
         <ColorPickerButton />
         <InsertLinkButton />
+        <InsertImageButton />
       </Stack>
     </Toolbar>
   )

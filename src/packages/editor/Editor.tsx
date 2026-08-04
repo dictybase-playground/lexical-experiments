@@ -15,7 +15,7 @@ import {
   getOrElse as OgetOrElse,
   fromNullable as OfromNullable,
 } from "fp-ts/Option"
-import { ImagePlugin } from "@dictybase/image-plugin"
+import { BasicImagePlugin } from "@dictybase/image-plugin"
 import { DictybaseToolbar } from "@dictybase/editor-toolbar"
 import { TreeViewPlugin } from "./TreeViewPlugin"
 import {
@@ -49,7 +49,7 @@ const Editor = ({
       <>{plugins}</>
       <ListPlugin />
       <LinkPlugin />
-      <ImagePlugin />
+      <BasicImagePlugin />
       <HistoryPlugin />
       {pipe(
         toolbar,
