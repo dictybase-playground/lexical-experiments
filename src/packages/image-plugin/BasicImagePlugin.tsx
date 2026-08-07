@@ -1,7 +1,5 @@
 import { useEffect } from "react"
-import {
-  COMMAND_PRIORITY_EDITOR,
-} from "lexical"
+import { COMMAND_PRIORITY_EDITOR, $getRoot } from "lexical"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 import { pipe } from "fp-ts/function"
 import {
@@ -14,7 +12,7 @@ import { match } from "ts-pattern"
 import { BasicImageNode } from "./BasicImageNode"
 import { INSERT_IMAGE_COMMAND, InsertImagePayload } from "./InsertImageCommand"
 import {
-  getParagraphNodeFromSelection,
+  getTopLevelElementFromSelection,
   getFlexLayoutNodeFromSelection,
 } from "./InsertImageHelpers"
 
@@ -29,31 +27,19 @@ const BasicImagePlugin = () => {
     const unregisterInsertImage = editor.registerCommand(
       INSERT_IMAGE_COMMAND,
       (payload: InsertImagePayload) => {
-        console.log("inserting")
         const imageNode = new BasicImageNode(payload)
-        const paragraphNode = getParagraphNodeFromSelection()
+        const topLevelNode = getTopLevelElementFromSelection()
         return pipe(
-          paragraphNode,
+          topLevelNode,
           OfromNullable,
-          Omap((someParagraphNode) => {
-            match(payload.alignment)
-              .with("left", () => someParagraphNode.insertBefore(imageNode))
-              .with("right", () => someParagraphNode.insertAfter(imageNode))
-              .otherwise(() => someParagraphNode.insertBefore(imageNode))
+          Omap((someNode) => {
+            someNode.insertAfter(imageNode)
             return true
           }),
-          OorElse(() => {
-            const flexParagraph = getFlexLayoutNodeFromSelection()
-            return pipe(
-              flexParagraph,
-              OfromNullable,
-              Omap((someFlexParagraph) => {
-                someFlexParagraph.append(imageNode)
-                return true
-              }),
-            )
+          OgetOrElse(() => {
+            $getRoot().append(imageNode)
+            return true
           }),
-          OgetOrElse(() => false),
         )
       },
       COMMAND_PRIORITY_EDITOR,
