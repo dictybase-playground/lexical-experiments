@@ -5,4 +5,4 @@ export type InsertImagePayload = {
   key?: string
 }
 
-export const INSERT_IMAGE_COMMAND = createCommand<InsertImagePayload>()
+export const INSERT_IMAGE_COMMAND = createCommand<InsertImagePayload>("INSERT_IMAGE")
