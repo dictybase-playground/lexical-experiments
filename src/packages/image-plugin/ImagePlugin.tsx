@@ -1,9 +1,16 @@
 import { useEffect } from "react"
 import {
+  KEY_ENTER_COMMAND,
+  $getRoot,
+  $getSelection,
+  $createParagraphNode,
   COMMAND_PRIORITY_EDITOR,
   DRAGSTART_COMMAND,
   COMMAND_PRIORITY_HIGH,
   DROP_COMMAND,
+  LexicalEditor,
+  $isNodeSelection,
+  $setSelection,
 } from "lexical"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 import { pipe } from "fp-ts/function"
@@ -12,15 +19,40 @@ import {
   getOrElse as OgetOrElse,
   orElse as OorElse,
   map as Omap,
+  flatMap as OflatMap,
+  filter as Ofilter,
+  match as Omatch,
 } from "fp-ts/Option"
 import { match } from "ts-pattern"
-import { ImageNode } from "./ImageNode"
+import { last as Alast } from "fp-ts/Array"
+import { ImageNode, $isImageNode } from "./ImageNode"
 import { INSERT_IMAGE_COMMAND, InsertImagePayload } from "./InsertImageCommand"
 import { onDragStart, onDrop } from "./dragHandlers"
-import {
-  getParagraphNodeFromSelection,
-  getFlexLayoutNodeFromSelection,
-} from "./InsertImageHelpers"
+import { getTopLevelElementFromSelection } from "./InsertImageHelpers"
+import { $isFlexLayoutNode } from "@dictybase/flex-layout-plugin"
+
+// If the currentSelection is an ImageNode, insert a paragraph
+const onEnter = () => {
+  return pipe(
+    $getSelection(),
+    OfromNullable,
+    Omap((selection) => selection.getNodes()),
+    OflatMap(Alast),
+    Ofilter($isImageNode),
+    Omatch(
+      () => false,
+      (imageNode) => {
+        const paragraph = $createParagraphNode()
+        imageNode.insertAfter(paragraph)
+        return true
+      },
+    ),
+    // Ofilter($isNodeSelection),
+    // Omap((nodeSelection) => {
+    //   nodeSelection
+    // }),
+  )
+}
 
 const ImagePlugin = () => {
   const [editor] = useLexicalComposerContext()
@@ -34,50 +66,56 @@ const ImagePlugin = () => {
       INSERT_IMAGE_COMMAND,
       (payload: InsertImagePayload) => {
         const imageNode = new ImageNode(payload)
-        const paragraphNode = getParagraphNodeFromSelection()
+        const topLevelNode = getTopLevelElementFromSelection()
         return pipe(
-          paragraphNode,
+          topLevelNode,
           OfromNullable,
-          Omap((someParagraphNode) => {
-            match(payload.alignment)
-              .with("left", () => someParagraphNode.insertBefore(imageNode))
-              .with("right", () => someParagraphNode.insertAfter(imageNode))
-              .otherwise(() => someParagraphNode.insertBefore(imageNode))
+          Omap((someNode) => {
+            someNode.insertAfter(imageNode)
             return true
           }),
-          OorElse(() => {
-            const flexParagraph = getFlexLayoutNodeFromSelection()
+          OgetOrElse(() => {
+            // get the flex layout node and append it, else do nothing.
             return pipe(
-              flexParagraph,
+              $getRoot().getFirstChild(),
               OfromNullable,
-              Omap((someFlexParagraph) => {
-                someFlexParagraph.append(imageNode)
-                return true
-              }),
+              Ofilter($isFlexLayoutNode),
+              Omatch(
+                () => false,
+                (flexLayoutNode) => {
+                  flexLayoutNode.append(imageNode)
+                  return true
+                },
+              ),
             )
           }),
-          OgetOrElse(() => false),
         )
       },
       COMMAND_PRIORITY_EDITOR,
     )
 
-    const unregisterDragStart = editor.registerCommand(
-      DRAGSTART_COMMAND,
-      onDragStart,
-      COMMAND_PRIORITY_HIGH,
-    )
-
-    const unregisterDrop = editor.registerCommand(
-      DROP_COMMAND,
-      (event) => onDrop(event, editor),
-      COMMAND_PRIORITY_HIGH,
-    )
+    // const unregisterInsertParagraph = editor.registerCommand(
+    //   KEY_ENTER_COMMAND,
+    //   onEnter,
+    //   COMMAND_PRIORITY_EDITOR,
+    // )
+    // const unregisterDragStart = editor.registerCommand(
+    //   DRAGSTART_COMMAND,
+    //   onDragStart,
+    //   COMMAND_PRIORITY_HIGH,
+    // )
+    //
+    // const unregisterDrop = editor.registerCommand(
+    //   DROP_COMMAND,
+    //   (event) => onDrop(event, editor),
+    //   COMMAND_PRIORITY_HIGH,
+    // )
 
     return () => {
       unregisterInsertImage()
-      unregisterDragStart()
-      unregisterDrop()
+      // unregisterInsertParagraph()
+      // unregisterDragStart()
+      // unregisterDrop()
     }
   })
 
