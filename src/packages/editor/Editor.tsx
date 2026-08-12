@@ -1,7 +1,4 @@
-import {
-  InitialConfigType,
-  LexicalComposer,
-} from "@lexical/react/LexicalComposer"
+import { InitialConfigType, LexicalComposer } from "@lexical/react/LexicalComposer"
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin"
 import { ContentEditable } from "@lexical/react/LexicalContentEditable"
 import { ListPlugin } from "@lexical/react/LexicalListPlugin"
@@ -11,32 +8,22 @@ import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary"
 import { Stack } from "@mui/material"
 import { pipe } from "fp-ts/function"
 import { match as Bmatch } from "fp-ts/boolean"
-import {
-  getOrElse as OgetOrElse,
-  fromNullable as OfromNullable,
-} from "fp-ts/Option"
-import { BasicImagePlugin } from "@dictybase/image-plugin"
+import { getOrElse as OgetOrElse, fromNullable as OfromNullable } from "fp-ts/Option"
+import { ImagePlugin } from "@dictybase/image-plugin"
 import { DictybaseToolbar } from "@dictybase/editor-toolbar"
 import { TreeViewPlugin } from "./TreeViewPlugin"
-import {
-  useEditorAreaStyles,
-  useEditorPlaceholderStyles,
-} from "./useEditorStyles"
+import { useEditorAreaStyles, useEditorPlaceholderStyles } from "./useEditorStyles"
 import "./editor.css"
+import { FlexLayoutPlugin } from "@dictybase/flex-layout-plugin"
 
 type EditorProperties = {
-  config: InitialConfigType,
+  config: InitialConfigType
   plugins?: Array<JSX.Element>
   editable?: boolean
   toolbar?: JSX.Element
 }
 
-const Editor = ({
-  config,
-  editable = true,
-  toolbar,
-  plugins,
-}: EditorProperties) => {
+const Editor = ({ config, editable = true, toolbar, plugins }: EditorProperties) => {
   const { classes: placeholderClasses } = useEditorPlaceholderStyles()
   const { classes: editorAreaClasses } = useEditorAreaStyles({ editable })
 
@@ -45,12 +32,14 @@ const Editor = ({
       initialConfig={{
         ...config,
         editable,
-      }}>
+      }}
+    >
       <>{plugins}</>
       <ListPlugin />
       <LinkPlugin />
-      <BasicImagePlugin />
+      <ImagePlugin />
       <HistoryPlugin />
+      <FlexLayoutPlugin />
       {pipe(
         toolbar,
         OfromNullable,
@@ -69,16 +58,9 @@ const Editor = ({
             <RichTextPlugin
               ErrorBoundary={LexicalErrorBoundary}
               contentEditable={
-                <ContentEditable
-                  id="content-editor"
-                  className={editorAreaClasses.container}
-                />
+                <ContentEditable id="content-editor" className={editorAreaClasses.container} />
               }
-              placeholder={
-                <div className={placeholderClasses.root}>
-                  Enter some text...
-                </div>
-              }
+              placeholder={<div className={placeholderClasses.root}>Enter some text...</div>}
             />
           </div>
         </Stack>

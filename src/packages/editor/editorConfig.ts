@@ -2,14 +2,14 @@ import { InitialConfigType } from "@lexical/react/LexicalComposer"
 import { ListItemNode, ListNode } from "@lexical/list"
 import { HeadingNode, QuoteNode } from "@lexical/rich-text"
 import { LinkNode } from "@lexical/link"
-import { BasicImageNode } from "@dictybase/image-plugin"
+import { BasicImageNode, ImageNode } from "@dictybase/image-plugin"
 import { FlexLayoutNode } from "@dictybase/flex-layout-plugin"
 import { DownloadLinkNode } from "@dictybase/editor-toolbar"
 import { defaultStateString, flexLayoutStateString } from "./initialStates"
 
 const editorTheme = {
   paragraph: "editor-paragraphy",
-  "flexLayout": "editor-flex-layout",
+  flexLayout: "editor-flex-layout",
   image: "editor-image",
   text: {
     bold: "editor-text-bold",
@@ -33,7 +33,7 @@ const flexLayoutEditorConfig: InitialConfigType = {
     DownloadLinkNode,
     ListItemNode,
     ListNode,
-    BasicImageNode,
+    ImageNode,
     FlexLayoutNode,
   ],
   editorState: flexLayoutStateString,
@@ -43,16 +43,8 @@ const flexLayoutEditorConfig: InitialConfigType = {
 const defaultEditorConfig: InitialConfigType = {
   namespace: "defaultEditor",
   theme: { ...editorTheme },
-  nodes: [
-    HeadingNode,
-    QuoteNode,
-    LinkNode,
-    DownloadLinkNode,
-    ListItemNode,
-    ListNode,
-    BasicImageNode,
-  ],
+  nodes: [HeadingNode, QuoteNode, LinkNode, DownloadLinkNode, ListItemNode, ListNode, ImageNode],
   editorState: defaultStateString,
-  onError
+  onError,
 }
 export { flexLayoutEditorConfig, defaultEditorConfig }
