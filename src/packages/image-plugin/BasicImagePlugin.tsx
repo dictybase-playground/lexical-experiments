@@ -2,19 +2,10 @@ import { useEffect } from "react"
 import { COMMAND_PRIORITY_EDITOR, $getRoot } from "lexical"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 import { pipe } from "fp-ts/function"
-import {
-  fromNullable as OfromNullable,
-  getOrElse as OgetOrElse,
-  orElse as OorElse,
-  map as Omap,
-} from "fp-ts/Option"
-import { match } from "ts-pattern"
+import { fromNullable as OfromNullable, getOrElse as OgetOrElse, map as Omap } from "fp-ts/Option"
 import { BasicImageNode } from "./BasicImageNode"
 import { INSERT_IMAGE_COMMAND, InsertImagePayload } from "./InsertImageCommand"
-import {
-  getTopLevelElementFromSelection,
-  getFlexLayoutNodeFromSelection,
-} from "./InsertImageHelpers"
+import { getTopLevelElementFromSelection } from "./InsertImageHelpers"
 
 const BasicImagePlugin = () => {
   const [editor] = useLexicalComposerContext()
@@ -23,7 +14,7 @@ const BasicImagePlugin = () => {
     if (!editor.hasNodes([BasicImageNode])) {
       throw new Error("ImagesPlugin: BasicImageNode not registered on editor")
     }
-    console.log("BasicImagePlugin registered")
+    // Image insertion handler
     const unregisterInsertImage = editor.registerCommand(
       INSERT_IMAGE_COMMAND,
       (payload: InsertImagePayload) => {
@@ -45,6 +36,9 @@ const BasicImagePlugin = () => {
       COMMAND_PRIORITY_EDITOR,
     )
 
+    // Image hlick handler
+
+    // <Enter> key press handler
     return () => {
       unregisterInsertImage()
     }
