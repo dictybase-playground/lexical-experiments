@@ -1,12 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import {
-  EditorConfig,
-  ElementNode,
-  LexicalNode,
-  $createParagraphNode,
-  $isParagraphNode,
-  ParagraphNode,
-} from "lexical"
+import { EditorConfig, ElementNode, LexicalNode, $createParagraphNode } from "lexical"
 
 const nodeTypeName = "flex-layout"
 
@@ -41,14 +34,6 @@ class FlexLayoutNode extends ElementNode {
 
   override isShadowRoot() {
     return true
-  }
-
-  getParagraphNodeOrThrow() {
-    const paragraphNode = this.getChildren().find((node) =>
-      $isParagraphNode(node),
-    )
-    if (!paragraphNode) throw new Error("FlexLayoutNode has no ParagraphNode")
-    return paragraphNode as ParagraphNode
   }
 
   override createDOM(config: EditorConfig) {
