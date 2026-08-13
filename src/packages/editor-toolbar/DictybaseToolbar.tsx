@@ -10,6 +10,7 @@ import { FormatUnderlineButton } from "./components/FormatUnderlineButton"
 import { ColorPickerButton } from "./components/ColorPickerButton"
 import { InsertLinkButton } from "./components/InsertLinkButton"
 import { InsertImageButton } from "./components/InsertImageButton"
+import { InspectButton } from "./components/InspectButton"
 import { useCleanup } from "./hooks/useCleanup"
 
 const DictybaseToolbar = () => {
@@ -21,7 +22,8 @@ const DictybaseToolbar = () => {
         columnGap: "8px",
         marginBottom: "1px",
         background: "#fff",
-      }}>
+      }}
+    >
       <Stack direction="row">
         <UndoButton />
         <RedoButton />
@@ -38,6 +40,7 @@ const DictybaseToolbar = () => {
         <ColorPickerButton />
         <InsertLinkButton />
         <InsertImageButton />
+        <InspectButton />
       </Stack>
     </Toolbar>
   )
