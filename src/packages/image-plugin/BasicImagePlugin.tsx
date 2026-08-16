@@ -4,7 +4,7 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 import { pipe } from "fp-ts/function"
 import { fromNullable as OfromNullable, getOrElse as OgetOrElse, map as Omap } from "fp-ts/Option"
 import { BasicImageNode } from "./BasicImageNode"
-import { INSERT_IMAGE_COMMAND, InsertImagePayload } from "./InsertImageCommand"
+import { INSERT_BASIC_IMAGE_COMMAND, InsertBasicImagePayload } from "./InsertImageCommand"
 import { getTopLevelElementFromSelection } from "./InsertImageHelpers"
 
 const BasicImagePlugin = () => {
@@ -16,8 +16,8 @@ const BasicImagePlugin = () => {
     }
     // Image insertion handler
     const unregisterInsertImage = editor.registerCommand(
-      INSERT_IMAGE_COMMAND,
-      (payload: InsertImagePayload) => {
+      INSERT_BASIC_IMAGE_COMMAND,
+      (payload: InsertBasicImagePayload) => {
         const imageNode = new BasicImageNode(payload)
         const topLevelNode = getTopLevelElementFromSelection()
         return pipe(
