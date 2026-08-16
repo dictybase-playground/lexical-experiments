@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import {
   KEY_ENTER_COMMAND,
   $getRoot,
+  $getNearestRootOrShadowRoot,
   $getSelection,
   $createParagraphNode,
   COMMAND_PRIORITY_EDITOR,
@@ -32,25 +33,31 @@ import { getTopLevelElementFromSelection } from "./InsertImageHelpers"
 import { $isFlexLayoutNode } from "@dictybase/flex-layout-plugin"
 
 // If the currentSelection is an ImageNode, insert a paragraph
-const onEnter = () => {
+const onInsertImage = (payload: InsertImagePayload) => {
+  const imageNode = new ImageNode(payload)
+  const topLevelNode = getTopLevelElementFromSelection()
   return pipe(
-    $getSelection(),
+    topLevelNode,
     OfromNullable,
-    Omap((selection) => selection.getNodes()),
-    OflatMap(Alast),
-    Ofilter($isImageNode),
-    Omatch(
-      () => false,
-      (imageNode) => {
-        const paragraph = $createParagraphNode()
-        imageNode.insertAfter(paragraph)
-        return true
-      },
-    ),
-    // Ofilter($isNodeSelection),
-    // Omap((nodeSelection) => {
-    //   nodeSelection
-    // }),
+    Omap((someNode) => {
+      someNode.insertAfter(imageNode)
+      return true
+    }),
+    OgetOrElse(() => {
+      // get the flex layout node and append it, else do nothing.
+      return pipe(
+        $getRoot().getFirstChild(),
+        OfromNullable,
+        Ofilter($isFlexLayoutNode),
+        Omatch(
+          () => false,
+          (flexLayoutNode) => {
+            flexLayoutNode.append(imageNode)
+            return true
+          },
+        ),
+      )
+    }),
   )
 }
 
@@ -64,33 +71,7 @@ const ImagePlugin = () => {
 
     const unregisterInsertImage = editor.registerCommand(
       INSERT_IMAGE_COMMAND,
-      (payload: InsertImagePayload) => {
-        const imageNode = new ImageNode(payload)
-        const topLevelNode = getTopLevelElementFromSelection()
-        return pipe(
-          topLevelNode,
-          OfromNullable,
-          Omap((someNode) => {
-            someNode.insertAfter(imageNode)
-            return true
-          }),
-          OgetOrElse(() => {
-            // get the flex layout node and append it, else do nothing.
-            return pipe(
-              $getRoot().getFirstChild(),
-              OfromNullable,
-              Ofilter($isFlexLayoutNode),
-              Omatch(
-                () => false,
-                (flexLayoutNode) => {
-                  flexLayoutNode.append(imageNode)
-                  return true
-                },
-              ),
-            )
-          }),
-        )
-      },
+      onInsertImage,
       COMMAND_PRIORITY_EDITOR,
     )
 
@@ -122,4 +103,4 @@ const ImagePlugin = () => {
   return <></>
 }
 
-export { ImagePlugin }
+export { ImagePlugin, onInsertImage }
