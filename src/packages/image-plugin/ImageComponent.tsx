@@ -46,7 +46,7 @@ const ImageComponent = ({
   }
 
   useEffect(() => {
-    const unregisterDragListener = editor.registerCommand(
+    const unregisterClickListener = editor.registerCommand(
       CLICK_COMMAND,
       (payload: MouseEvent) => {
         // This prevents the selection from being cleared after resizing the image
@@ -71,7 +71,7 @@ const ImageComponent = ({
     )
 
     return () => {
-      unregisterDragListener()
+      unregisterClickListener()
     }
   })
   return (
