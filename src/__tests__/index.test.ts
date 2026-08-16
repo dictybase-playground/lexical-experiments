@@ -35,8 +35,7 @@ test("onInsertImage appends an ImageNode to end of the FlexLayoutNode if there i
   )
   editor.read(() => {
     flexLayoutNodeLastChildType = pipe(
-      $getRoot().getChildren(),
-      AfindFirst($isFlexLayoutNode),
+      getFlexLayoutNode(),
       Omap((fln) => fln.getLastChild()),
       OflatMap(OfromNullable),
       Omap((node) => node.getType()),
