@@ -8,10 +8,10 @@ export type InsertBasicImagePayload = {
 export type InsertImagePayload = {
   source: string
   alt?: string
-  width: number
-  height: number
+  width?: number
+  height?: number
   key?: string
-  alignment: "left" | "right"
+  alignment?: "left" | "right"
 }
 
 const INSERT_IMAGE_COMMAND = createCommand<InsertImagePayload>("INSERT_IMAGE")
