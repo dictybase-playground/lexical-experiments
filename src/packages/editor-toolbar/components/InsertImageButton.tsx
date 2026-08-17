@@ -6,7 +6,7 @@ import { INSERT_IMAGE_COMMAND } from "@dictybase/image-plugin"
 const InsertImageButton = () => {
   const [editor] = useLexicalComposerContext()
   const onClick = () => {
-    editor.dispatchCommand(INSERT_IMAGE_COMMAND, { source: "/sample.jpg" })
+    editor.dispatchCommand(INSERT_IMAGE_COMMAND, { source: "/sample.jpg", width: 500 })
   }
   return (
     <>

@@ -1,25 +1,22 @@
 import { Button } from "@mui/material"
-import { $getSelection } from "lexical"
-import VisibilityIcon from "@mui/icons-material/Visibility"
+import FileDownloadIcon from "@mui/icons-material/FileDownload"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 
 const InspectButton = () => {
   const [editor] = useLexicalComposerContext()
   const onClick = () => {
-    editor.read(() => {
-      console.log($getSelection().getNodes())
-    })
+    navigator.clipboard.writeText(JSON.stringify(editor.getEditorState()))
   }
   return (
     <>
       <Button
-        title="Insert Image"
+        title="Copy State"
         color="inherit"
         variant="text"
         onClick={onClick}
-        startIcon={<VisibilityIcon />}
+        startIcon={<FileDownloadIcon />}
       >
-        Inspect
+        Copy State
       </Button>
     </>
   )
