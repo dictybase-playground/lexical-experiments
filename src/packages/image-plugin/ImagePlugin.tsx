@@ -75,28 +75,22 @@ const ImagePlugin = () => {
       COMMAND_PRIORITY_EDITOR,
     )
 
-    // const unregisterInsertParagraph = editor.registerCommand(
-    //   KEY_ENTER_COMMAND,
-    //   onEnter,
-    //   COMMAND_PRIORITY_EDITOR,
-    // )
-    // const unregisterDragStart = editor.registerCommand(
-    //   DRAGSTART_COMMAND,
-    //   onDragStart,
-    //   COMMAND_PRIORITY_HIGH,
-    // )
-    //
-    // const unregisterDrop = editor.registerCommand(
-    //   DROP_COMMAND,
-    //   (event) => onDrop(event, editor),
-    //   COMMAND_PRIORITY_HIGH,
-    // )
+    const unregisterDragStart = editor.registerCommand(
+      DRAGSTART_COMMAND,
+      onDragStart,
+      COMMAND_PRIORITY_HIGH,
+    )
+
+    const unregisterDrop = editor.registerCommand(
+      DROP_COMMAND,
+      (event) => onDrop(event, editor),
+      COMMAND_PRIORITY_HIGH,
+    )
 
     return () => {
       unregisterInsertImage()
-      // unregisterInsertParagraph()
-      // unregisterDragStart()
-      // unregisterDrop()
+      unregisterDragStart()
+      unregisterDrop()
     }
   })
 
