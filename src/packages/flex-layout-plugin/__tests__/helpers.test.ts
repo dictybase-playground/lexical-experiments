@@ -12,11 +12,7 @@ import {
   $setSelection,
   $createRangeSelection,
 } from "lexical"
-import {
-  getTopLevelElementFromSelection,
-  getTextEdges,
-  handleTextContent,
-} from "../helpers"
+import { getTopLevelElementFromSelection, getTextEdges, handleTextContent } from "../helpers"
 import { FlexLayoutNode } from "../FlexLayoutNode"
 
 describe("getTextEdges", () => {
@@ -34,26 +30,24 @@ describe("getTopLevelElementFromSelection", () => {
   test("Retrieves the top level element from the first node in a given selection", () => {
     const editor = createEditor({ nodes: [FlexLayoutNode] })
     let retrievedElement
-    let topLevelElement
+    let paragraphNode
 
     editor.update(() => {
-      topLevelElement = new FlexLayoutNode()
-      const paragraphNode = new ParagraphNode()
+      const flexLayoutNode = new FlexLayoutNode()
+      paragraphNode = new ParagraphNode()
       const textNode = new TextNode("test")
 
       const root = $getRoot()
       paragraphNode.append(textNode)
-      topLevelElement.append(paragraphNode)
-      root.append(topLevelElement)
+      flexLayoutNode.append(paragraphNode)
+      root.append(flexLayoutNode)
 
       textNode.select()
       const selection = $getSelection()
-      retrievedElement = getTopLevelElementFromSelection(
-        selection as RangeSelection,
-      )
+      retrievedElement = getTopLevelElementFromSelection(selection as RangeSelection)
     })
 
-    expect(retrievedElement).toEqual(topLevelElement)
+    expect(retrievedElement).toEqual(paragraphNode)
   })
 })
 
@@ -66,9 +60,7 @@ describe("handleTextContent", () => {
     let newParagraphNodeText
 
     editor.update(() => {
-      const originNode = $createParagraphNode().append(
-        $createTextNode(testString),
-      )
+      const originNode = $createParagraphNode().append($createTextNode(testString))
       const newParagraphNode = $createParagraphNode()
       const textNode = originNode.getAllTextNodes()[0]
 
